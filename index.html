@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth"> <!-- 'dark' class will be added here by JS -->
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shonar Bangla - Premium Bengali Restaurant</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Inter for modern text, Hind Siliguri for Bengali -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Hind+Siliguri:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        /* Custom Styles */
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Default light mode styles */
+            @apply bg-white text-slate-900;
+        }
+        
+        /* Dark mode styles */
+        .dark body {
+            @apply bg-black text-slate-100;
+        }
+
+        /* Bengali font for specific elements */
+        .font-bengali {
+            font-family: 'Hind Siliguri', sans-serif;
+        }
+
+        /* --- Glowing Effect --- */
+        .glow-shadow {
+            /* A subtle base shadow */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Lightened shadow for white bg */
+            transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+
+        .glow-shadow-hover:hover {
+            /* The "glowing shadow" on hover */
+            transform: translateY(-4px);
+            box-shadow: 0 0 20px 4px rgba(251, 146, 60, 0.4), /* amber-400 glow */
+                        0 4px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary {
+            @apply px-6 py-3 bg-amber-500 text-black font-bold rounded-full transition-all duration-300 shadow-lg;
+        }
+        
+        .btn-primary:hover {
+            @apply bg-amber-400 shadow-xl shadow-amber-500/30 scale-105;
+        }
+        
+        .btn-secondary {
+             @apply px-6 py-3 bg-transparent border-2 border-amber-500 text-amber-500 font-bold rounded-full transition-all duration-300;
+        }
+        
+        .btn-secondary:hover {
+            @apply bg-amber-500 text-black shadow-lg shadow-amber-500/30 scale-105;
+        }
+        
+        /* --- Hero Pulsing Glow Animation --- */
+        .hero-logo-glow {
+            /* Using amber-400 color */
+            text-shadow: 0 0 10px rgba(251, 146, 60, 0.4),
+                         0 0 20px rgba(251, 146, 60, 0.4),
+                         0 0 30px rgba(251, 146, 60, 0.4),
+                         0 0 40px rgba(251, 146, 60, 0.3);
+            animation: pulse-glow 2.5s infinite alternate;
+        }
+        
+        @keyframes pulse-glow {
+            from {
+                text-shadow: 0 0 10px rgba(251, 146, 60, 0.3),
+                             0 0 20px rgba(251, 146, 60, 0.3),
+                             0 0 30px rgba(251, 146, 60, 0.3),
+                             0 0 40px rgba(251, 146, 60, 0.2);
+            }
+            to {
+                text-shadow: 0 0 20px rgba(251, 146, 60, 0.5),
+                             0 0 30px rgba(251, 146, 60, 0.5),
+                             0 0 40px rgba(251, 146, 60, 0.5),
+                             0 0 50px rgba(251, 146, 60, 0.4);
+            }
+        }
+
+        /* --- Scroll Fade-in Animation --- */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform;
+        }
+        
+        .scroll-reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* --- Active Menu Tab --- */
+        .menu-tab.active {
+            @apply bg-amber-500 text-black;
+        }
+        
+        /* --- Mobile Nav --- */
+        #mobile-menu {
+            transition: transform 0.3s ease-in-out;
+        }
+
+        /* Hide/Show icons for theme toggle */
+        .dark #theme-toggle-sun-icon {
+            display: none;
+        }
+        #theme-toggle-moon-icon {
+            display: none;
+        }
+        .dark #theme-toggle-moon-icon {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="transition-colors duration-300"> <!-- Removed base colors, will be set by JS on <html> -->
+
+    <!-- 
+      =================================
+      HEADER & NAVIGATION
+      =================================
+    -->
+    <header class="bg-white/80 dark:bg-black/80 backdrop-blur-md sticky top-0 z-50 shadow-md dark:shadow-slate-800"> <!-- Dark mode styles added -->
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo -->
+                <a href="#home" class="flex-shrink-0 flex items-center gap-2">
+                    <img class="h-12 w-auto" 
+                         src="shonar-bangla-logo.png" 
+                         alt="Shonar Bangla Logo"
+                         onerror="this.onerror=null; this.src='https://placehold.co/100x100/fbbF46/000?text=SB';">
+                    <span class="font-bold text-xl hidden sm:inline text-black dark:text-white">Shonar Bangla</span> <!-- Dark mode styles added -->
+                </a>
+                
+                <div class="flex items-center gap-6">
+                    <!-- Desktop Nav -->
+                    <div class="hidden md:flex space-x-8">
+                        <a href="#menu" class="text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-500 transition font-medium">Menu</a>
+                        <a href="#gallery" class="text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-500 transition font-medium">Gallery</a>
+                        <a href="#services" class="text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-500 transition font-medium">Services</a>
+                        <a href="#contact" class="text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-500 transition font-medium">Contact</a>
+                    </div>
+                    
+                    <!-- Theme Toggle Button -->
+                    <button id="theme-toggle" class="text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-500 focus:outline-none">
+                        <!-- Sun Icon -->
+                        <svg id="theme-toggle-sun-icon" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-6.364-.386 1.591-1.591M3 12H.75m.386-6.364 1.591 1.591M12 12a2.25 2.25 0 0 1-2.25-2.25A2.25 2.25 0 0 1 12 7.5a2.25 2.25 0 0 1 2.25 2.25A2.25 2.25 0 0 1 12 12Z" />
+                        </svg>
+                        <!-- Moon Icon -->
+                        <svg id="theme-toggle-moon-icon" class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25c0 5.385 4.365 9.75 9.75 9.75 2.83 0 5.396-1.21 7.252-3.002Z" />
+                        </svg>
+                    </button>
+                    
+                    <!-- Mobile Nav Button -->
+                    <div class="md:hidden">
+                        <button id="mobile-nav-toggle" class="text-slate-800 dark:text-slate-200 hover:text-amber-600 focus:outline-none"> <!-- Dark mode styles added -->
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <!-- Mobile Nav Menu (Hidden by default) -->
+        <div id="mobile-menu" class="md:hidden bg-white dark:bg-slate-900 shadow-xl absolute top-20 left-0 w-full transform -translate-x-full z-40" <!-- Dark mode styles added -->
+             aria-hidden="true">
+            <div class="flex flex-col space-y-4 p-5">
+                <a href="#menu" class="mobile-nav-link text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-500 transition font-medium block px-3 py-2 rounded-md text-base">Menu</a>
+                <a href="#gallery" class="mobile-nav-link text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-500 transition font-medium block px-3 py-2 rounded-md text-base">Gallery</a>
+                <a href="#services" class="mobile-nav-link text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-500 transition font-medium block px-3 py-2 rounded-md text-base">Services</a>
+                <a href="#contact" class="mobile-nav-link text-slate-700 dark:text-slate-300 hover:text-amber-600 dark:hover:text-amber-500 transition font-medium block px-3 py-2 rounded-md text-base">Contact</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 
+          =================================
+          HERO SECTION
+          =================================
+        -->
+        <section id="home" class="h-[90vh] min-h-[600px] flex items-center justify-center text-center relative overflow-hidden bg-slate-50 dark:bg-slate-900"> <!-- Dark mode styles added -->
+            <!-- Background Image (subtle) -->
+            <div class="absolute inset-0 bg-[url('https://placehold.co/1920x1080/ccc/eee?text=Restaurant+Interior')] bg-cover bg-center opacity-30 dark:opacity-10"></div> <!-- Dark mode opacity -->
+            
+            <div class="relative z-10 flex flex-col items-center p-4">
+                <!-- The Bengali Logo -->
+                <h1 class="font-bengali text-6xl sm:text-8xl md:text-9xl font-bold text-black dark:text-white hero-logo-glow"> <!-- Dark mode styles added -->
+                    সোনার বাংলা
+                </h1>
+                
+                <p class="text-xl sm:text-2xl md:text-3xl text-amber-600 font-medium mt-4"> <!-- Darkened amber -->
+                    Premium Bengali Restaurant
+                </p>
+                <p class="text-lg text-slate-700 dark:text-slate-300 mt-2 max-w-lg"> <!-- Dark mode styles added -->
+                    Experience the authentic taste of Bengal, right here in your city.
+                </p>
+                
+                <div class="flex flex-col sm:flex-row gap-4 mt-10">
+                    <a href="#menu" class="btn-primary">View Full Menu</a>
+                    <a href="#contact" class="btn-secondary">Order Now</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =================================
+          MENU SECTION
+          =================================
+        -->
+        <section id="menu" class="py-24 sm:py-32 bg-white dark:bg-black"> <!-- Dark mode styles added -->
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-2xl mx-auto text-center scroll-reveal">
+                    <h2 class="text-3xl font-bold tracking-tight text-amber-600 sm:text-4xl">Our Menu</h2> <!-- Darkened amber -->
+                    <p class="mt-4 text-lg text-slate-700 dark:text-slate-300"> <!-- Dark mode styles added -->
+                        Crafted with tradition, served with love.
+                    </p>
+                </div>
+                
+                <!-- Menu Tabs -->
+                <div id="menu-tabs" class="flex flex-wrap justify-center gap-2 sm:gap-4 mt-12 scroll-reveal">
+                    <button class="menu-tab active px-5 py-2 font-medium rounded-full transition duration-300 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-amber-500 hover:text-black dark:hover:text-black" data-category="appetizers">Appetizers</button>
+                    <button class="menu-tab px-5 py-2 font-medium rounded-full transition duration-300 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-amber-500 hover:text-black dark:hover:text-black" data-category="mainCourse">Main Course</button>
+                    <button class="menu-tab px-5 py-2 font-medium rounded-full transition duration-300 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-amber-500 hover:text-black dark:hover:text-black" data-category="biryani">Biryani</button>
+                    <button class="menu-tab px-5 py-2 font-medium rounded-full transition duration-300 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-amber-500 hover:text-black dark:hover:text-black" data-category="desserts">Desserts</button>
+                    <button class="menu-tab px-5 py-2 font-medium rounded-full transition duration-300 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-amber-500 hover:text-black dark:hover:text-black" data-category="drinks">Drinks</button>
+                </div>
+                
+                <!-- Menu Grid -->
+                <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-16">
+                    <!-- Menu items will be injected here by JavaScript -->
+                </div>
+            </div>
+        </section>
+        
+        <!-- 
+          =================================
+          PHOTO GALLERY SECTION
+          =================================
+        -->
+        <section id="gallery" class="py-24 sm:py-32 bg-slate-50 dark:bg-slate-900"> <!-- Dark mode styles added -->
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-2xl mx-auto text-center scroll-reveal">
+                    <h2 class="text-3xl font-bold tracking-tight text-amber-600 sm:text-4xl">Gallery</h2> <!-- Darkened amber -->
+                    <p class="mt-4 text-lg text-slate-700 dark:text-slate-300"> <!-- Dark mode styles added -->
+                        A Glimpse of Our Culture & Cuisine.
+                    </p>
+                </div>
+                
+                <!-- Gallery Grid -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
+                    <!-- Images open the modal -->
+                    <img src="https://placehold.co/600x400/eee/999?text=Biryani" alt="Gallery Image 1" class="gallery-item w-full h-full object-cover rounded-lg cursor-pointer glow-shadow glow-shadow-hover scroll-reveal">
+                    <img src="https://placehold.co/600x400/eee/999?text=Korma" alt="Gallery Image 2" class="gallery-item w-full h-full object-cover rounded-lg cursor-pointer glow-shadow glow-shadow-hover scroll-reveal" style="transition-delay: 100ms;">
+                    <img src="https://placehold.co/600x400/eee/999?text=Mishti+Doi" alt="Gallery Image 3" class="gallery-item w-full h-full object-cover rounded-lg cursor-pointer glow-shadow glow-shadow-hover scroll-reveal" style="transition-delay: 200ms;">
+                    <img src="https://placehold.co/600x400/eee/999?text=Interior" alt="Gallery Image 4" class="gallery-item w-full h-full object-cover rounded-lg cursor-pointer glow-shadow glow-shadow-hover scroll-reveal" style="transition-delay: 300ms;">
+                    <img src="https://placehold.co/600x400/eee/999?text=Fish+Fry" alt="Gallery Image 5" class="gallery-item w-full h-full object-cover rounded-lg cursor-pointer glow-shadow glow-shadow-hover scroll-reveal">
+                    <img src="https://placehold.co/600x400/eee/999?text=Luchi" alt="Gallery Image 6" class="gallery-item w-full h-full object-cover rounded-lg cursor-pointer glow-shadow glow-shadow-hover scroll-reveal" style="transition-delay: 100ms;">
+                    <img src="https://placehold.co/600x400/eee/999?text=Event" alt="Gallery Image 7" class="gallery-item w-full h-full object-cover rounded-lg cursor-pointer glow-shadow glow-shadow-hover scroll-reveal" style="transition-delay: 200ms;">
+                    <img src="https://placehold.co/600x400/eee/999?text=Sweets" alt="Gallery Image 8" class="gallery-item w-full h-full object-cover rounded-lg cursor-pointer glow-shadow glow-shadow-hover scroll-reveal" style="transition-delay: 300ms;">
+                </div>
+            </div>
+        </section>
+
+        <!-- 
+          =================================
+          SERVICES SECTION
+          =================================
+        -->
+        <section id="services" class="py-24 sm:py-32 bg-white dark:bg-black"> <!-- Dark mode styles added -->
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-2xl mx-auto text-center scroll-reveal">
+                    <h2 class="text-3xl font-bold tracking-tight text-amber-600 sm:text-4xl">Catering & Events</h2> <!-- Darkened amber -->
+                    <p class="mt-4 text-lg text-slate-700 dark:text-slate-300"> <!-- Dark mode styles added -->
+                        Bring the taste of Shonar Bangla to your special occasion.
+                    </p>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+                    <!-- Service Tile 1: Corporate -->
+                    <div class="bg-white dark:bg-slate-900 shadow-xl p-8 rounded-2xl glow-shadow glow-shadow-hover text-center scroll-reveal"> <!-- Dark mode styles added -->
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Corporate Events</h3> <!-- Dark mode styles added -->
+                        <p class="mt-4 text-slate-700 dark:text-slate-300"> <!-- Dark mode styles added -->
+                            Impress your clients and colleagues with authentic Bengali cuisine. Professional, punctual, and delicious.
+                        </p>
+                    </div>
+                    
+                    <!-- Service Tile 2: Wedding -->
+                    <div class="bg-white dark:bg-slate-900 shadow-xl p-8 rounded-2xl glow-shadow glow-shadow-hover text-center scroll-reveal" style="transition-delay: 150ms;"> <!-- Dark mode styles added -->
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Wedding Events</h3> <!-- Dark mode styles added -->
+                        <p class="mt-4 text-slate-700 dark:text-slate-300"> <!-- Dark mode styles added -->
+                            Make your special day unforgettable with a rich and flavorful Bengali feast. Custom menus available.
+                        </p>
+                    </div>
+                    
+                    <!-- Service Tile 3: Social -->
+                    <div class="bg-white dark:bg-slate-900 shadow-xl p-8 rounded-2xl glow-shadow glow-shadow-hover text-center scroll-reveal" style="transition-delay: 300ms;"> <!-- Dark mode styles added -->
+                        <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100">Social Events</h3> <!-- Dark mode styles added -->
+                        <p class="mt-4 text-slate-700 dark:text-slate-300"> <!-- Dark mode styles added -->
+                            From birthdays to family gatherings, we cater to all your private parties with the best of Bengal.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 
+          =================================
+          CONTACT & LOCATION SECTION
+          =================================
+        -->
+        <section id="contact" class="py-24 sm:py-32 bg-slate-50 dark:bg-slate-900"> <!-- Dark mode styles added -->
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                    <!-- Contact Info -->
+                    <div class="scroll-reveal">
+                        <h2 class="text-3xl font-bold tracking-tight text-amber-600 sm:text-4xl">Get In Touch</h2> <!-- Darkened amber -->
+                        <p class="mt-4 text-lg text-slate-700 dark:text-slate-300"> <!-- Dark mode styles added -->
+                            We'd love to hear from you. Call us for reservations, take-out, or catering inquiries.
+                        </p>
+                        
+                        <div class="mt-10 space-y-6">
+                            <div class="flex gap-4">
+                                <!-- Icon -->
+                                <svg class="h-6 w-6 text-amber-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Address</h3> <!-- Dark mode styles added -->
+                                    <p class="text-slate-700 dark:text-slate-300">4158 Kingston Road, Scarborough, ON</p> <!-- Dark mode styles added -->
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <!-- Icon -->
+                                <svg class="h-6 w-6 text-amber-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-2.892-1.446-5.16-3.714-6.606-6.606l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z" /></svg>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Phone</h3> <!-- Dark mode styles added -->
+                                    <p class="text-slate-700 dark:text-slate-300">(647) 438-8528</p> <!-- Dark mode styles added -->
+                                </div>
+                            </div>
+                            
+                            <div class="flex gap-4">
+                                <!-- Icon -->
+                                <svg class="h-6 w-6 text-amber-600 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                                <div>
+                                    <h3 class="text-lg font-semibold text-slate-900 dark:text-slate-100">Opening Hours</h3> <!-- Dark mode styles added -->
+                                    <p class="text-slate-700 dark:text-slate-300">Mon - Sun: 11:00 AM - 10:00 PM</p> <!-- Dark mode styles added -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Map -->
+                    <div class="rounded-lg overflow-hidden glow-shadow scroll-reveal" style="transition-delay: 150ms;">
+                        <iframe 
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2881.083321526315!2d-79.19011738450005!3d43.77123617911761!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89d4d058c4f1c1c9%3A0xe68157123b33363b!2s4158%20Kingston%20Rd%2C%20Scarborough%2C%20ON%20M1E%202M3!5e0!3m2!1sen!2sca!4v1678888888888!5m2!1sen!2sca" 
+                            width="100%" 
+                            height="450" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="dark:invert dark:grayscale"> <!-- Dark mode filter for map -->
+                        </iframe>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- 
+      =================================
+      FOOTER
+      =================================
+    -->
+    <footer class="bg-white dark:bg-black border-t border-slate-200 dark:border-slate-800"> <!-- Dark mode styles added -->
+        <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-slate-500 dark:text-slate-400"> <!-- Dark mode styles added -->
+            <p>&copy; <span id="current-year"></span> Shonar Bangla Restaurant. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    
+    <!-- 
+      =================================
+      GALLERY MODAL
+      =================================
+    -->
+    <div id="gallery-modal" class="fixed inset-0 bg-black/80 z-[100] hidden flex items-center justify-center p-4" aria-hidden="true"> <!-- Kept dark overlay for contrast -->
+        <button id="modal-close" class="absolute top-4 right-4 text-white text-5xl z-[110]">&times;</button>
+        <img id="modal-image" src="" alt="Gallery Image" class="max-w-full max-h-[90vh] rounded-lg shadow-2xl">
+    </div>
+
+
+    <!-- 
+      =================================
+      JAVASCRIPT
+      =================================
+    -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Theme Toggle Functionality ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const htmlEl = document.documentElement;
+
+            // Function to set the theme
+            function setTheme(theme) {
+                if (theme === 'dark') {
+                    htmlEl.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    htmlEl.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                }
+            }
+
+            // Check for saved theme in localStorage, default to 'dark'
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'light') {
+                setTheme('light');
+            } else {
+                setTheme('dark'); // Default to dark
+            }
+
+            // Add click event listener to the toggle button
+            themeToggleBtn.addEventListener('click', () => {
+                if (htmlEl.classList.contains('dark')) {
+                    setTheme('light');
+                } else {
+                    setTheme('dark');
+                }
+            });
+            
+
+            // === EDIT YOUR MENU HERE ===
+            // This object holds all your menu data.
+            // To add/remove/change items, just edit this object.
+            // 'img' links are placeholders. Replace them with your actual image URLs.
+            const menuData = {
+                appetizers: [
+                    { name: "Singara (Samosa)", price: "4.99", desc: "Crispy pastry filled with spiced potatoes and peas.", img: "https://placehold.co/100x100/eee/999?text=Singara" },
+                    { name: "Piyaju (Onion Fritters)", price: "5.99", desc: "Crispy lentil and onion fritters, a street food classic.", img: "https://placehold.co/100x100/eee/999?text=Piyaju" },
+                    { name: "Beguni (Eggplant Fritters)", price: "5.99", desc: "Thinly sliced eggplant dipped in chickpea batter and fried.", img: "https://placehold.co/100x100/eee/999?text=Beguni" },
+                    { name: "Mughlai Paratha", price: "9.99", desc: "Pan-fried stuffed bread with minced meat, egg, and spices.", img: "https://placehold.co/100x100/eee/999?text=Mughlai" },
+                ],
+                mainCourse: [
+                    { name: "Shorshe Ilish", price: "18.99", desc: "Hilsa fish cooked in a pungent and flavorful mustard gravy.", img: "https://placehold.co/100x100/eee/999?text=Ilish" },
+                    { name: "Chingri Malai Curry", price: "16.99", desc: "Prawns cooked in a creamy and delicate coconut milk sauce.", img: "https://placehold.co/100x100/eee/999?text=Chingri" },
+                    { name: "Kosha Mangsho", price: "15.99", desc: "Slow-cooked mutton curry in a rich, spicy, dark gravy.", img: "https://placehold.co/100x100/eee/999?text=Mangsho" },
+                    { name: "Chicken Korma", price: "14.99", desc: "Chicken in a mild, creamy yogurt and cashew-based sauce.", img: "https://placehold.co/100x100/eee/999?text=Korma" },
+                    { name: "Bhuna Khichuri", price: "12.99", desc: "Rich and savory rice and lentil dish, slow-cooked with spices.", img: "https://placehold.co/100x100/eee/999?text=Khichuri" },
+                ],
+                biryani: [
+                    { name: "Kolkata Chicken Biryani", price: "14.99", desc: "Fragrant rice with chicken, potato, and a blend of spices.", img: "https://placehold.co/100x100/eee/999?text=Biryani" },
+                    { name: "Kolkata Mutton Biryani", price: "16.99", desc: "Aromatic rice with tender mutton, potato, and spices.", img: "https://placehold.co/100x100/eee/999?text=Biryani" },
+                ],
+                desserts: [
+                    { name: "Mishti Doi", price: "4.99", desc: "Sweet, caramelized yogurt, a Bengali delicacy.", img: "https://placehold.co/100x100/eee/999?text=Doi" },
+                    { name: "Rosogolla", price: "3.99", desc: "Spongy cottage cheese balls soaked in light sugar syrup.", img: "https://placehold.co/100x100/eee/999?text=Rosogolla" },
+                    { name: "Patishapta", price: "5.99", desc: "Thin crepes filled with a coconut and jaggery mixture.", img: "https://placehold.co/100x100/eee/999?text=Patishapta" },
+                ],
+                drinks: [
+                    { name: "Mango Lassi", price: "4.99", desc: "Refreshing yogurt drink blended with sweet mango pulp.", img: "https://placehold.co/100x100/eee/999?text=Lassi" },
+                    { name: "Masala Chai", price: "2.99", desc: "Spiced milk tea, brewed strong and aromatic.", img: "https://placehold.co/100x100/eee/999?text=Chai" },
+                ]
+            };
+            // === END OF MENU DATA ===
+
+
+            // --- Mobile Nav Toggle ---
+            const navToggle = document.getElementById('mobile-nav-toggle');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+            
+            function toggleMenu() {
+                const isHidden = mobileMenu.classList.contains('-translate-x-full');
+                if (isHidden) {
+                    mobileMenu.classList.remove('-translate-x-full');
+                    mobileMenu.classList.add('translate-x-0');
+                    mobileMenu.setAttribute('aria-hidden', 'false');
+                    navToggle.innerHTML = `<svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>`; // 'X' icon
+                } else {
+                    mobileMenu.classList.add('-translate-x-full');
+                    mobileMenu.classList.remove('translate-x-0');
+                    mobileMenu.setAttribute('aria-hidden', 'true');
+                    navToggle.innerHTML = `<svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>`; // 'Menu' icon
+                }
+            }
+            
+            navToggle.addEventListener('click', toggleMenu);
+            // Close menu when a link is clicked
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    if (mobileMenu.classList.contains('translate-x-0')) {
+                        toggleMenu();
+                    }
+                });
+            });
+
+            // --- Menu Tab Functionality ---
+            const menuTabs = document.getElementById('menu-tabs');
+            const menuGrid = document.getElementById('menu-grid');
+            
+            // --- Scroll Reveal Animation ---
+            // MOVED THIS BLOCK UP to fix initialization error
+            let observer;
+            
+            function observeScrollElements() {
+                if (observer) {
+                    observer.disconnect(); // Disconnect previous observer if re-rendering
+                }
+                
+                const elements = document.querySelectorAll('.scroll-reveal');
+                
+                observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            observer.unobserve(entry.target); // Stop observing once visible
+                        }
+                    });
+                }, { threshold: 0.1 }); // Trigger when 10% of the element is visible
+
+                elements.forEach(el => {
+                    observer.observe(el);
+                });
+            }
+            // --- End of Moved Block ---
+
+            function renderMenu(category) {
+                // Clear current grid
+                menuGrid.innerHTML = '';
+                
+                const items = menuData[category];
+                if (!items) return;
+                
+                items.forEach((item, index) => {
+                    // Create the menu item "tile"
+                    // REMOVED 'scroll-reveal' class from here to ensure menu items always appear
+                    const itemHtml = `
+                        <div class="bg-white dark:bg-slate-900 shadow-lg rounded-2xl p-6 flex gap-5 glow-shadow glow-shadow-hover" style="transition-delay: ${index * 100}ms;">
+                            <img src="${item.img}" 
+                                 alt="${item.name}" 
+                                 class="w-24 h-24 object-cover rounded-full flex-shrink-0 border-2 border-slate-200 dark:border-slate-700"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/100x100/eee/999?text=Food';">
+                            <div class="flex-grow">
+                                <div class="flex justify-between items-center">
+                                    <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100">${item.name}</h3>
+                                    <span class="text-xl font-bold text-amber-600">$${item.price}</span>
+                                </div>
+                                <p class="text-slate-600 dark:text-slate-400 mt-2">${item.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                    menuGrid.innerHTML += itemHtml;
+                });
+                
+                // After rendering, re-observe the new items for scroll animation
+                // We still call this for the *other* elements on the page
+                observeScrollElements();
+            }
+            
+            menuTabs.addEventListener('click', (e) => {
+                if (e.target.classList.contains('menu-tab')) {
+                    // Remove active class from all tabs
+                    menuTabs.querySelectorAll('.menu-tab').forEach(tab => tab.classList.remove('active'));
+                    // Add active class to clicked tab
+                    e.target.classList.add('active');
+                    
+                    const category = e.target.dataset.category;
+                    renderMenu(category);
+                }
+            });
+            
+            // Initial render for the default active tab
+            renderMenu('appetizers');
+
+            // --- Gallery Modal Functionality ---
+            const modal = document.getElementById('gallery-modal');
+            const modalImg = document.getElementById('modal-image');
+            const closeModal = document.getElementById('modal-close');
+            
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    modalImg.src = item.src;
+                    modal.classList.remove('hidden');
+                    modal.setAttribute('aria-hidden', 'false');
+                });
+            });
+            
+            function hideModal() {
+                modal.classList.add('hidden');
+                modal.setAttribute('aria-hidden', 'true');
+            }
+            
+            closeModal.addEventListener('click', hideModal);
+            modal.addEventListener('click', (e) => {
+                // Close if clicking on the background
+                if (e.target === modal) {
+                    hideModal();
+                }
+            });
+            
+            // --- Scroll Reveal Animation ---
+            // This section was moved up
+            
+            // We must call this ONCE on load to get all the *non-menu* animated elements
+            observeScrollElements(); 
+            
+            // --- Set Current Year in Footer ---
+            document.getElementById('current-year').textContent = new Date().getFullYear();
+
+        });
+    </script>
+
+</body>
+</html>
+
+
+
